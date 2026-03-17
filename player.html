@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مشغل الدروس - عرض كامل</title>
+    <link rel="icon" href="img/0.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: #000; margin: 0; padding: 0; overflow-x: hidden;">
+    <nav class="navbar" style="position: relative; z-index: 10;">
+        <div class="logo">TAIPING<span>STADY HARD</span></div>
+        <a href="profile.html" class="logout-link" style="text-decoration: none; background: #e91e63; border: #e91e63; border-radius: 30px; padding: 5px 15px; color: white;">إغلاق X</a>
+    </nav>
+
+    <div class="player-container" style="width: 100vw; display: flex; flex-direction: column; align-items: center;">
+        <div id="videoWrapper" style="width: 100%; max-width: 1200px; aspect-ratio: 16/9; background: #000;"></div>
+        
+        <div style="width: 100%; max-width: 1200px; padding: 20px; box-sizing: border-box; text-align: right;">
+            <h1 id="vTitle" style="color: white; margin: 10px 0; font-size: clamp(18px, 4vw, 28px);"></h1>
+            <p id="vSubject" style="color: #e91e63; font-weight: bold; font-size: 18px; margin: 0;"></p>
+
+            <div class="like-button" style="margin-top: 20px;">
+                <input class="on" id="heart" type="checkbox" />
+                <label class="like" for="heart">
+                    <svg class="like-icon" fill-rule="nonzero" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"></path>
+                    </svg>
+                    <span class="like-text">Likes</span>
+                </label>
+                <span class="like-count one">0</span>
+                <span class="like-count two">1</span>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #222; margin: 20px 0;">
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

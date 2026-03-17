@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAIPING STADY HARD - دخول</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="img/0.png">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // هذا السطر يمنع ظهور صفحة التسجيل إذا كان المستخدم مسجلاً بالفعل
+        if (localStorage.getItem('isLogged') === 'true') {
+            window.location.href = 'profile.html';
+        }
+    </script>
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">TAIPING <span>STADY HARD</span></div>
+            <h2>إنشاء حساب طالب</h2>
+        </div>
+        
+        <form id="loginForm">
+            <div class="image-upload-wrapper">
+                <div class="image-preview" id="imagePreview">
+                    <i class="fas fa-user-graduate"></i>
+                    <img src="" alt="Preview" id="profilePreviewImg">
+                </div>
+                <label for="userImage" class="upload-label">
+                    <i class="fas fa-camera"></i>
+                </label>
+                <input type="file" id="userImage" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="input-box">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" placeholder="اسم المستخدم" required>
+            </div>
+            
+            <div class="input-box">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="كلمة المرور" required>
+            </div>
+
+            <div class="input-box">
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" id="adress" placeholder="عنوانك بالتفصيل" required>
+            </div>
+
+            <div class="input-box">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="phone" placeholder="رقم الهاتف" required>
+            </div>
+
+            <a href="https://chat.whatsapp.com/HWIAUl4zykBFASppybWYjp" target="_blank" class="whatsapp-btn" id="waBtn">
+                <i class="fab fa-whatsapp"></i>
+                انضم لمجموعتنا عبر واتساب
+            </a>
+
+            <div class="divider">أو</div>
+
+            <button type="submit" class="login-btn">ابدأ المذاكرة الآن</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
