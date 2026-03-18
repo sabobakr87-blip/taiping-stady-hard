@@ -146,6 +146,37 @@ body {
 .profile-info h3 { font-size: 16px; margin: 5px 0; color: white; white-space: nowrap; }
 .profile-info p { font-size: 11px; margin: 2px 0; color: #adb5bd; white-space: nowrap; }
 
+.side-menu {
+    /* ... إعداداتك القديمة ... */
+    overflow-y: auto; /* تغيير من hidden إلى auto */
+    overflow-x: hidden; /* لمنع أي اهتزاز عرضي */
+    max-height: calc(100vh - 65px); /* التأكد أنها لا تتجاوز طول الشاشة */
+}
+
+/* لتجميل شكل شريط التمرير داخل المنيو */
+.side-menu::-webkit-scrollbar {
+    width: 4px;
+}
+.side-menu::-webkit-scrollbar-thumb {
+    background: #e91e63;
+    border-radius: 10px;
+}
+@media screen and (max-height: 500px) {
+    .side-menu {
+        top: 50px; /* تقليل المسافة العلوية في وضع التدوير */
+        height: calc(100vh - 50px);
+    }
+    
+    .navbar {
+        padding: 5px 20px; /* تصغير الهيدر لتوفير مساحة */
+    }
+
+    /* التأكد من أن المحتوى الرئيسي قابل للتمرير */
+    .main-body {
+        overflow-y: visible; 
+        height: auto;
+    }
+}
 .side-menu:hover .sidebar-profile img { width: 80px; height: 80px; }
 .side-menu:hover .profile-info { display: block; opacity: 1; }
 
