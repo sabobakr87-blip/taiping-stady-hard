@@ -40,17 +40,46 @@ const MY_DATA = {
 // 2. منطق تسجيل الدخول وزر الواتساب
 function checkInputs() {
     const waBtn = document.getElementById('waBtn');
+    const submitBtn = document.querySelector('.login-btn'); // زر "ابدأ المذاكرة"
     const fields = ['username', 'password', 'adress', 'phone'].map(id => document.getElementById(id));
     
-    if (waBtn && fields.every(f => f)) {
-        const allFilled = fields.every(f => f.value.trim() !== "");
-        if (allFilled) {
+    // 1. فحص هل كل الحقول النصية مكتوبة؟
+    const allFieldsFilled = fields.every(f => f && f.value.trim() !== "");
+    
+    // 2. فحص هل الصورة تم رفعها؟ (نتأكد أن المتغير يحتوي على بيانات)
+    const isImageUploaded = userImageData && userImageData.length > 500; 
+
+    if (allFieldsFilled && isImageUploaded) {
+        // فك القفل عن زر الواتساب
+        if (waBtn) {
             waBtn.classList.add('active');
-        } else {
+            waBtn.style.pointerEvents = "auto";
+            waBtn.style.opacity = "1";
+            waBtn.style.filter = "grayscale(0%)"; // إزالة اللون الرمادي
+        }
+        // فك القفل عن زر التسجيل
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = "1";
+            submitBtn.style.cursor = "pointer";
+        }
+    } else {
+        // قفل زر الواتساب
+        if (waBtn) {
             waBtn.classList.remove('active');
+            waBtn.style.pointerEvents = "none";
+            waBtn.style.opacity = "0.5";
+            waBtn.style.filter = "grayscale(100%)"; // جعله رمادي تماماً
+        }
+        // قفل زر التسجيل
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.5";
+            submitBtn.style.cursor = "not-allowed";
         }
     }
 }
+
 
 // 3. معالجة الصور والتسجيل
 const imageInput = document.getElementById('userImage');
@@ -67,22 +96,11 @@ if (imageInput) {
                     previewImg.style.display = 'block';
                     document.querySelector('.image-preview i').style.display = 'none';
                 }
+                // استدعاء الفحص هنا فوراً ليفتح الأزرار
+                checkInputs(); 
             };
             reader.readAsDataURL(file);
         }
-    });
-}
-
-const loginForm = document.getElementById('loginForm');
-if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        localStorage.setItem('isLogged', 'true');
-        localStorage.setItem('currentUser', document.getElementById('username').value);
-        localStorage.setItem('userAddress', document.getElementById('adress').value);
-        localStorage.setItem('userPhone', document.getElementById('phone').value);
-        if (userImageData) localStorage.setItem('userPhoto', userImageData);
-        window.location.href = 'profile.html';
     });
 }
 
