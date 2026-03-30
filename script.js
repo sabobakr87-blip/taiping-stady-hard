@@ -263,7 +263,7 @@ window.onload = function() {
 }
 
 // 2. إعدادات Firebase واللايكات
-// 2. إعدادات Firebase واللايكات (النسخة المطورة لكل فيديو)
+// 2. إعدادات Firebase واللايكات
 const firebaseConfig = {
     apiKey: "AIzaSyBLuIFnExXMIXvyNXdQElC1DHFtbjOUY2o",
     authDomain: "like-eacfa.firebaseapp.com",
@@ -274,24 +274,22 @@ const firebaseConfig = {
     appId: "1:921550003195:web:ced683a4d7c183f06e095e"
 };
 
-// التأكد من تشغيل Firebase مرة واحدة فقط
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const database = firebase.database();
 
-// تحديد مرجع فريد للفيديو الحالي بناءً على عنوانه
-const videoTitle = localStorage.getItem('play_title') || "video_default";
-const videoKey = videoTitle.replace(/[.#$[\]]/g, "_"); // تنظيف العنوان للـ Firebase
-const likesRef = database.ref('likesByVideo/' + videoKey);
+// --- التعديل يبدأ من هنا ليكون لكل فيديو عداد خاص ---
+const videoTitle = localStorage.getItem('play_title') || "default_video";
+const likesRef = database.ref('likesByVideo/' + videoTitle.replace(/[.#$[\]]/g, "_")); 
 
 const heartCheckbox = document.getElementById('heart');
 const countOne = document.querySelector('.like-count.one');
 const countTwo = document.querySelector('.like-count.two');
 
-// استرجاع حالة اللايك لهذا الفيديو من ذاكرة المتصفح
-const hasLiked = localStorage.getItem('hasLiked_' + videoKey) === 'true';
-if (heartCheckbox) heartCheckbox.checked = hasLiked;
+// التأكد من حالة اللايك للفيديو الحالي من المتصفح
+const hasLiked = localStorage.getItem('hasLiked_' + videoTitle) === 'true';
+if(heartCheckbox) heartCheckbox.checked = hasLiked;
 
-// مزامنة العداد من Firebase
+// مزامنة العداد من قاعدة البيانات
 likesRef.on('value', (snapshot) => {
     const count = snapshot.val() || 0;
     if (heartCheckbox && heartCheckbox.checked) {
@@ -303,13 +301,10 @@ likesRef.on('value', (snapshot) => {
     }
 });
 
-// التعامل مع الضغط على زر اللايك
-if (heartCheckbox) {
+// عند الضغط على القلب
+if(heartCheckbox) {
     heartCheckbox.addEventListener('change', () => {
-        // حفظ الحالة في المتصفح لمنع تكرار اللايك لنفس المستخدم
-        localStorage.setItem('hasLiked_' + videoKey, heartCheckbox.checked);
-        
-        // تحديث الرقم في Firebase
+        localStorage.setItem('hasLiked_' + videoTitle, heartCheckbox.checked);
         likesRef.transaction((currentCount) => {
             return (currentCount || 0) + (heartCheckbox.checked ? 1 : -1);
         });

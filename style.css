@@ -68,7 +68,7 @@ body {
     width: calc(100% - 70px);
 }
 
-.main-slider { position: relative; width: 100%; height: 400px; overflow: hidden; }
+.main-slider { position: relative; width: 100%; height: 400px; overflow: hidden;}
 .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: 0.6s; }
 .slide.active { opacity: 1; }
 .slider-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; z-index: 10; }
@@ -146,35 +146,34 @@ body {
 .profile-info h3 { font-size: 16px; margin: 5px 0; color: white; white-space: nowrap; }
 .profile-info p { font-size: 11px; margin: 2px 0; color: #adb5bd; white-space: nowrap; }
 
+/* هذا الجزء يتحكم في ظهور شريط التمرير */
 .side-menu {
-    /* ... إعداداتك القديمة ... */
-    overflow-y: auto; /* تغيير من hidden إلى auto */
-    overflow-x: hidden; /* لمنع أي اهتزاز عرضي */
-    max-height: calc(100vh - 65px); /* التأكد أنها لا تتجاوز طول الشاشة */
+    /* تغيير hidden إلى auto لكي يظهر الشريط عند الحاجة فقط */
+    overflow-y: auto; 
+    overflow-x: hidden;
+    /* دعم اللمس السلس للهواتف */
+    -webkit-overflow-scrolling: touch; 
 }
 
-/* لتجميل شكل شريط التمرير داخل المنيو */
+/* تنسيق شكل شريط التمرير ليناسب تصميمك الداكن */
 .side-menu::-webkit-scrollbar {
-    width: 4px;
+    width: 4px; /* عرض نحيف لكي لا يزعج المستخدم */
 }
+
 .side-menu::-webkit-scrollbar-thumb {
-    background: #e91e63;
+    background: #e91e63; /* لون وردي مثل اللوجو الخاص بك */
     border-radius: 10px;
 }
-@media screen and (max-height: 500px) {
-    .side-menu {
-        top: 50px; /* تقليل المسافة العلوية في وضع التدوير */
-        height: calc(100vh - 50px);
+
+/* تعديل خاص لوضع تدوير الشاشة (Landscape) */
+@media screen and (max-height: 450px) {
+    .side-menu ul {
+        padding-bottom: 80px; /* مساحة إضافية بالأسفل لضمان ظهور آخر زر */
     }
     
-    .navbar {
-        padding: 5px 20px; /* تصغير الهيدر لتوفير مساحة */
-    }
-
-    /* التأكد من أن المحتوى الرئيسي قابل للتمرير */
-    .main-body {
-        overflow-y: visible; 
-        height: auto;
+    .sidebar-profile img {
+        width: 35px; /* تصغير الصورة قليلاً في وضع التدوير لتوفير مساحة */
+        height: 35px;
     }
 }
 .side-menu:hover .sidebar-profile img { width: 80px; height: 80px; }
@@ -305,3 +304,52 @@ body {
 .on:checked ~ .like-count.one { transform: translateY(-40px); }
 
 @keyframes enlarge { 0% { transform: scale(0.5); } 100% { transform: scale(1.2); } }
+/* --- التعديلات النهائية لضمان إجبارية الصورة بصرياً --- */
+
+/* 1. تعطيل زر الدخول الرئيسي عند البداية */
+.login-btn:disabled {
+    background-color: #555 !important; /* لون رمادي غامق */
+    color: #aaa !important;
+    cursor: not-allowed; /* تغيير شكل الماوس لعلامة المنع */
+    transform: none !important; /* إلغاء حركة التكبير عند الهوفر */
+    opacity: 0.6;
+    box-shadow: none;
+}
+
+/* 2. تحسين مظهر زر الواتساب وهو معطل */
+.whatsapp-btn {
+    background-color: #333 !important; /* لون داكن جداً وهو معطل */
+    border: 1px solid #444;
+    cursor: not-allowed;
+    filter: grayscale(100%); /* جعله أبيض وأسود تماماً */
+    transition: all 0.4s ease;
+}
+
+/* 3. مظهر زر الواتساب عندما يصبح نشطاً (بعد رفع الصورة) */
+.whatsapp-btn.active {
+    background-color: #25D366 !important; /* اللون الأخضر الأصلي */
+    filter: grayscale(0%); /* إعادة الألوان */
+    cursor: pointer;
+    opacity: 1;
+}
+
+/* 4. إضافة تأثير بصري لمنطقة رفع الصورة لجذب الانتباه */
+.image-upload-wrapper {
+    transition: transform 0.3s ease;
+}
+
+.image-upload-wrapper:hover {
+    transform: scale(1.05);
+}
+
+/* إذا كانت الصورة مفقودة، يمكننا إضافة إطار وامض خفيف (اختياري) */
+.image-preview.missing {
+    border-color: #ff4081;
+    animation: pulse-border 1.5s infinite;
+}
+
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(233, 30, 99, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(233, 30, 99, 0); }
+}
