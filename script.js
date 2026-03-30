@@ -263,6 +263,7 @@ window.onload = function() {
 }
 
 // 2. إعدادات Firebase واللايكات
+// 2. إعدادات Firebase واللايكات (النسخة المطورة لكل فيديو)
 const firebaseConfig = {
     apiKey: "AIzaSyBLuIFnExXMIXvyNXdQElC1DHFtbjOUY2o",
     authDomain: "like-eacfa.firebaseapp.com",
@@ -273,37 +274,47 @@ const firebaseConfig = {
     appId: "1:921550003195:web:ced683a4d7c183f06e095e"
 };
 
+// التأكد من تشغيل Firebase مرة واحدة فقط
 if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
 const database = firebase.database();
-const likesRef = database.ref('likesCount');
+
+// تحديد مرجع فريد للفيديو الحالي بناءً على عنوانه
+const videoTitle = localStorage.getItem('play_title') || "video_default";
+const videoKey = videoTitle.replace(/[.#$[\]]/g, "_"); // تنظيف العنوان للـ Firebase
+const likesRef = database.ref('likesByVideo/' + videoKey);
 
 const heartCheckbox = document.getElementById('heart');
 const countOne = document.querySelector('.like-count.one');
 const countTwo = document.querySelector('.like-count.two');
 
-// تذكر حالة اللايك
-const hasLiked = localStorage.getItem('hasLiked') === 'true';
-heartCheckbox.checked = hasLiked;
+// استرجاع حالة اللايك لهذا الفيديو من ذاكرة المتصفح
+const hasLiked = localStorage.getItem('hasLiked_' + videoKey) === 'true';
+if (heartCheckbox) heartCheckbox.checked = hasLiked;
 
-// مزامنة العداد
+// مزامنة العداد من Firebase
 likesRef.on('value', (snapshot) => {
     const count = snapshot.val() || 0;
-    if (heartCheckbox.checked) {
-        countOne.innerText = count - 1; 
-        countTwo.innerText = count;
+    if (heartCheckbox && heartCheckbox.checked) {
+        if(countOne) countOne.innerText = count - 1; 
+        if(countTwo) countTwo.innerText = count;
     } else {
-        countOne.innerText = count;
-        countTwo.innerText = count + 1;
+        if(countOne) countOne.innerText = count;
+        if(countTwo) countTwo.innerText = count + 1;
     }
 });
 
-// عند الضغط
-heartCheckbox.addEventListener('change', () => {
-    localStorage.setItem('hasLiked', heartCheckbox.checked);
-    likesRef.transaction((currentCount) => {
-        return (currentCount || 0) + (heartCheckbox.checked ? 1 : -1);
+// التعامل مع الضغط على زر اللايك
+if (heartCheckbox) {
+    heartCheckbox.addEventListener('change', () => {
+        // حفظ الحالة في المتصفح لمنع تكرار اللايك لنفس المستخدم
+        localStorage.setItem('hasLiked_' + videoKey, heartCheckbox.checked);
+        
+        // تحديث الرقم في Firebase
+        likesRef.transaction((currentCount) => {
+            return (currentCount || 0) + (heartCheckbox.checked ? 1 : -1);
+        });
     });
-});
+}
 // --- تابع الجزء الثالث: معالجة الصور والتسجيل ---
 if (imageInput) {
     imageInput.addEventListener('change', function() {
