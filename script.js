@@ -330,18 +330,6 @@ if (imageInput) {
     });
 }
 
-if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        localStorage.setItem('isLogged', 'true');
-        localStorage.setItem('currentUser', document.getElementById('username').value);
-        localStorage.setItem('userAddress', document.getElementById('adress').value);
-        localStorage.setItem('userPhone', document.getElementById('phone').value);
-        if (userImageData) localStorage.setItem('userPhoto', userImageData);
-        window.location.href = 'profile.html';
-    });
-}
-
 // --- الجزء الرابع: وظائف العرض والبحث والمفضلة ---
 
 function renderLessons(dataToRender = MY_DATA, isFavView = false) {
@@ -409,12 +397,24 @@ function searchLessons() {
 function updateSidebarProfile() {
     const sideImg = document.getElementById('sideUserImg');
     if (sideImg) {
-        sideImg.src = localStorage.getItem('userPhoto') || "image/0.jpg";
-        document.getElementById('sideUserName').innerText = localStorage.getItem('currentUser') || "طالب";
-        document.getElementById('sideUserAddress').innerText = localStorage.getItem('userAddress') || "غير مسجل";
-        document.getElementById('sideUserPhone').innerText = localStorage.getItem('userPhone') || "غير مسجل";
+        // نجلب الصورة من التخزين المحلي
+        const storedPhoto = localStorage.getItem('userPhoto');
+        // إذا وجدت نضعها، وإذا لم توجد نضع الصورة الافتراضية
+        sideImg.src = storedPhoto ? storedPhoto : "image/0.jpg"; 
+        
+        // تحديث باقي النصوص
+        if(document.getElementById('sideUserName')) {
+            document.getElementById('sideUserName').innerText = localStorage.getItem('currentUser') || "طالب";
+        }
+        if(document.getElementById('sideUserAddress')) {
+            document.getElementById('sideUserAddress').innerText = localStorage.getItem('userAddress') || "غير مسجل";
+        }
+        if(document.getElementById('sideUserPhone')) {
+            document.getElementById('sideUserPhone').innerText = localStorage.getItem('userPhone') || "غير مسجل";
+        }
     }
 }
+
 
 // --- الجزء الخامس: تفعيل السكربت النهائي ---
 document.addEventListener('DOMContentLoaded', () => {

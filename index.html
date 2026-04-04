@@ -70,7 +70,7 @@
             <button type="submit" class="login-btn">ابدأ المذاكرة الآن</button>
         </form>
     </div>
-    <script type="module">
+   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
@@ -86,38 +86,48 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // ربط الفورم
   const loginForm = document.getElementById('loginForm');
 
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-     // تجهيز البيانات بترتيب منطقي
+      // 1. تنظيف أي بيانات قديمة
+      const currentPhoto = userImageData; // نأخذ الصورة من المتغير العام في script.js
+      localStorage.clear();
+
+      // 2. تجهيز البيانات
       const studentData = {
-        username: document.getElementById('username').value, // الاسم أولاً
+        username: document.getElementById('username').value,
         password: document.getElementById('password').value,
         address: document.getElementById('adress').value,
         phone: document.getElementById('phone').value,
-        createdAt: new Date(), // تاريخ التسجيل
-        userPhoto: localStorage.getItem('userPhoto') || "" // الصورة في الآخر لأنها أضخم بيانات
+        createdAt: new Date(),
+        userPhoto: currentPhoto || "" 
       };
 
       try {
-        // إرسال البيانات إلى مجموعة "students" في Firebase
-        const docRef = await addDoc(collection(db, "students"), studentData);
-        console.log("تم حفظ الطالب في Firebase بالرقم: ", docRef.id);
+        // 3. الحفظ في Firebase
+        await addDoc(collection(db, "students"), studentData);
 
-        // حفظ الحالة محلياً للانتقال لصفحة البروفايل
+        // 4. الحفظ في LocalStorage لتعرضها صفحة البروفايل فوراً
         localStorage.setItem('isLogged', 'true');
         localStorage.setItem('currentUser', studentData.username);
         localStorage.setItem('userAddress', studentData.address);
         localStorage.setItem('userPhone', studentData.phone);
-        
+        if (currentPhoto) {
+            localStorage.setItem('userPhoto', currentPhoto);
+        }
+
+        // 5. الانتقال
         window.location.href = 'profile.html';
       } catch (error) {
-        console.error("خطأ في حفظ البيانات: ", error);
-        alert("حدث خطأ أثناء الاتصال بالقاعدة، تأكد من إعدادات Firestore Rules");
+        console.error("خطأ: ", error);
+        alert("حدث خطأ، سيتم الدخول بدون حفظ في السحابة حالياً");
+        // دخول احتياطي حتى لو فشل الفايربيز
+        localStorage.setItem('isLogged', 'true');
+        localStorage.setItem('currentUser', studentData.username);
+        window.location.href = 'profile.html';
       }
     });
   }
