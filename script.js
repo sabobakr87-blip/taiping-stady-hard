@@ -77,7 +77,9 @@ function checkInputs() {
     }
 }
 
-// 3. معالجة الصور
+// لازم السطر ده يكون موجود بره أي دالة
+const imageInput = document.getElementById('userImage'); 
+
 if (imageInput) {
     imageInput.addEventListener('change', function() {
         const file = this.files[0];
@@ -85,19 +87,18 @@ if (imageInput) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 userImageData = e.target.result;
-                localStorage.setItem('userPhoto', userImageData);
+                localStorage.setItem('userPhoto', userImageData); // حفظ الصورة
                 const previewImg = document.getElementById('profilePreviewImg');
                 if (previewImg) {
                     previewImg.src = userImageData;
                     previewImg.style.display = 'block';
                 }
-                checkInputs(); 
+                if (typeof checkInputs === "function") checkInputs(); 
             };
             reader.readAsDataURL(file);
         }
     });
 }
-
 // 4. عرض الدروس والمفضلة
 function renderLessons(dataToRender = MY_DATA) {
     const container = document.getElementById('foldersContainer');
