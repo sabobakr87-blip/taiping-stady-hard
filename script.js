@@ -22,6 +22,14 @@ const MY_DATA = {
         { title: "مراجعة الوحدة الثانية هندسة مقالي ج1", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/HYH7UZQ2mOk" },
         { title: "مراجعة الوحدة الثانية هندسة مقالي ج2", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/HUJkNbG8JKI" },
     ],
+    "الانجليزي": [
+        { title: "الوحدة 7", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/TlJluCpSUFo" },
+        { title: "الوحدة 8", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/90pmChIGuYA" },
+        { title: "الوحدة 9", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/ultPo5vlEeU?start=13" },
+        { title: "الوحدة 10", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/h4YuK5kMfqU" },
+        { title: "الوحدة 11", subject: "ميس ياسمين", videoUrl: "#" },
+        { title: "الوحدة 12", subject: "ميس ياسمين", videoUrl: "#" },
+        ],
     "العلوم": [
         { title: "مراجعة الوحدة الاولى", subject: "مستر احمد السعدي", videoUrl: "https://www.youtube.com/embed/YRJqiv1Np7s" },
         { title: "مراجعة الوحدة الثانية", subject: "مستر احمد السعدي", videoUrl: "https://www.youtube.com/embed/8jtwr5VGG0c" },
