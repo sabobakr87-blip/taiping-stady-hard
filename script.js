@@ -27,8 +27,8 @@ const MY_DATA = {
         { title: "الوحدة 8", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/90pmChIGuYA" },
         { title: "الوحدة 9", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/ultPo5vlEeU?start=13" },
         { title: "الوحدة 10", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/h4YuK5kMfqU" },
-        { title: "الوحدة 11", subject: "ميس ياسمين", videoUrl: "#" },
-        { title: "الوحدة 12", subject: "ميس ياسمين", videoUrl: "#" },
+        { title: "الوحدة 11", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/v9AhfAn92X8" },
+        { title: "الوحدة 12", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/v9AhfAn92X8" },
         ],
     "العلوم": [
         { title: "مراجعة الوحدة الاولى", subject: "مستر احمد السعدي", videoUrl: "https://www.youtube.com/embed/YRJqiv1Np7s" },
