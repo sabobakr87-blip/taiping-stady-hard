@@ -12,7 +12,7 @@ const MY_DATA = {
         { title: "اسم التفضيل", subject: "مستر فاروق", videoUrl: "https://www.youtube.com/embed/_mtb3-NWu-A" },
         { title: "مراجعة القرائة", subject: "مستر فاروق", videoUrl: "https://www.youtube.com/embed/YH9ObE_Y7vM" },
         { title: "مراجعة النحو", subject: "مستر فاروق", videoUrl: "https://www.youtube.com/embed/qpa9P16SMrA" },
-        { title: "مراجعة النصوص", subject: "مستر فاروق", videoUrl: "https://www.youtube.com/embed/hkWTU1dBR38" }
+        { title: "مراجعة النصوص", subject: "مستر فاروق", videoUrl: "https://www.youtube.com/embed/hkWTU1dBR38" },
     ],
     "الرياضيات": [
         { title: "مراجعة الوحدة الاولى جبر", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/zPk_-gwqOT4" },
@@ -20,7 +20,7 @@ const MY_DATA = {
         { title: "مراجعة الوحدة الاولى هندسة اختر فقط", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/_pqE7rQMU6k" },
         { title: "مراجعة الوحدة الاولى هندسة مقالي", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/MyD3b74H0zk" },
         { title: "مراجعة الوحدة الثانية هندسة مقالي ج1", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/HYH7UZQ2mOk" },
-        { title: "مراجعة الوحدة الثانية هندسة مقالي ج2", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/HUJkNbG8JKI" }
+        { title: "مراجعة الوحدة الثانية هندسة مقالي ج2", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/HUJkNbG8JKI" },
     ],
     "اللغة الانجليزية": [
         { title: "يونيت 7", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/TlJluCpSUFo?start=654" },
@@ -28,21 +28,21 @@ const MY_DATA = {
         { title: "يونيت 9", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/ultPo5vlEeU?start=13" },
         { title: "يونيت 10", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/h4YuK5kMfqU" },
         { title: "يونيت 11", subject: "ميس ياسمين", videoUrl: "#" },
-        { title: "يونيت 12", subject: "ميس ياسمين", videoUrl: "#" }
+        { title: "يونيت 12", subject: "ميس ياسمين", videoUrl: "#" },
     ],
     "العلوم": [
         { title: "مراجعة الوحدة الاولى", subject: "مستر احمد السعدي", videoUrl: "https://www.youtube.com/embed/YRJqiv1Np7s" },
         { title: "مراجعة الوحدة الثانية", subject: "مستر احمد السعدي", videoUrl: "https://www.youtube.com/embed/8jtwr5VGG0c" },
         { title: "مراجعة الوحدة الثالثة", subject: "مستر احمد حسام", videoUrl: "https://www.youtube.com/embed/_McA1QVEQNw" },
         { title: "مراجعة الوحدة الرابعة", subject: "مستر احمد حسام", videoUrl: "https://www.youtube.com/embed/Ig-wv5UEJsM" },
-        { title: "مراجعة منهج العلوم كامل", subject: "مستر محمد ابراهيم", videoUrl: "https://www.youtube.com/embed/DJ6i2Wqj0ec" }
+        { title: "مراجعة منهج العلوم كامل", subject: "مستر محمد ابراهيم", videoUrl: "https://www.youtube.com/embed/DJ6i2Wqj0ec" },
     ],
     "الدرسات الاجتماعية": [
         { title: "مراجعة الجغرافيا", subject: "مستر مهاب سلامة", videoUrl: "https://www.youtube.com/embed/YRJqiv1Np7s" },
         { title: "مراجعة تاريخ", subject: "مستر مهاب سلامة", videoUrl: "https://www.youtube.com/embed/J4QI9zGMeDs" },
         { title: "مراجعة الخرائط", subject: "مستر مهاب سلامة", videoUrl: "https://www.youtube.com/embed/C-5xSe-T1uI" },
-        { title: "اهم توقعات الامتحان مراجعة شاملة", subject: "مستر مهاب سلامة", videoUrl: "https://www.youtube.com/embed/MZPBA-_zkzY" }
-    ]
+        { title: "اهم توقعات الامتحان مراجعة شاملة", subject: "مستر مهاب سلامة", videoUrl: "https://www.youtube.com/embed/MZPBA-_zkzY" },
+    ],
 };
 
 // 2. منطق تسجيل الدخول
