@@ -22,14 +22,6 @@ const MY_DATA = {
         { title: "مراجعة الوحدة الثانية هندسة مقالي ج1", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/HYH7UZQ2mOk" },
         { title: "مراجعة الوحدة الثانية هندسة مقالي ج2", subject: "مستر مايكل صفوت", videoUrl: "https://www.youtube.com/embed/HUJkNbG8JKI" },
     ],
-    "الانجليزي": [
-        { title: "الوحدة 7", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/TlJluCpSUFo" },
-        { title: "الوحدة 8", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/90pmChIGuYA" },
-        { title: "الوحدة 9", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/ultPo5vlEeU?start=13" },
-        { title: "الوحدة 10", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/h4YuK5kMfqU" },
-        { title: "الوحدة 11", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/v9AhfAn92X8" },
-        { title: "الوحدة 12", subject: "ميس ياسمين", videoUrl: "https://www.youtube.com/embed/v9AhfAn92X8" },
-        ],
     "العلوم": [
         { title: "مراجعة الوحدة الاولى", subject: "مستر احمد السعدي", videoUrl: "https://www.youtube.com/embed/YRJqiv1Np7s" },
         { title: "مراجعة الوحدة الثانية", subject: "مستر احمد السعدي", videoUrl: "https://www.youtube.com/embed/8jtwr5VGG0c" },
@@ -44,6 +36,23 @@ const MY_DATA = {
         { title: "اهم توقعات الامتحان مراجعة شاملة", subject: "مستر مهاب سلامة", videoUrl: "https://www.youtube.com/embed/MZPBA-_zkzY" },
         ],
 };
+window.addEventListener('load', () => {
+    const loaderScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+
+    // الانتظار لمدة 10 ثوانٍ (10000ms)
+    setTimeout(() => {
+        if (loaderScreen) {
+            loaderScreen.style.opacity = '0'; // تأثير تلاشي
+            
+            setTimeout(() => {
+                loaderScreen.style.display = 'none'; // إزالة من الصفحة
+                mainContent.style.display = 'block'; // إظهار المحتوى الرئيسي
+                document.body.style.overflow = 'auto'; // السماح بالتمرير مجدداً
+            }, 500); // نصف ثانية لتأثير التلاشي
+        }
+    }, 10000); 
+});
 
 // 2. منطق تسجيل الدخول وزر الواتساب
 function checkInputs() {
@@ -259,14 +268,20 @@ window.onload = function() {
     const subject = localStorage.getItem('play_subject');
 
     if (videoUrl) {
-        const wrapper = document.getElementById('videoWrapper');
-        const cleanUrl = videoUrl + "?rel=0&autoplay=1";
-        wrapper.innerHTML = `
-            <iframe width="100%" height="100%" src="${cleanUrl}" 
-                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-            </iframe>`;
+        // 1. نضع النصوص أولاً
         document.getElementById('vTitle').innerText = title;
         document.getElementById('vSubject').innerText = subject;
+
+        // 2. لا نشغل الفيديو فوراً، ننتظر 10 ثوانٍ (نفس مدة شاشة التحميل)
+        setTimeout(() => {
+            const wrapper = document.getElementById('videoWrapper');
+            // الآن فقط نضيف الـ iframe ليتحمل الفيديو ويبدأ الصوت
+            const cleanUrl = videoUrl + "?rel=0&autoplay=1";
+            wrapper.innerHTML = `
+                <iframe width="100%" height="100%" src="${cleanUrl}" 
+                        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>`;
+        }, 10500); // 10 ثوانٍ و نصف (لضمان اختفاء شاشة التحميل أولاً)
     }
 }
 
@@ -338,6 +353,113 @@ if (imageInput) {
     });
 }
 
+// تحديد مرجع التعليقات في قاعدة البيانات بناءً على عنوان الفيديو
+const commentsRef = database.ref('commentsByVideo/' + videoTitle.replace(/[.#$[\]]/g, "_"));
+
+// وظيفة إرسال التعليق
+function sendComment() {
+    const input = document.getElementById('commentInput');
+    const text = input.value.trim();
+    const userName = localStorage.getItem('currentUser') || "طالب مجهول";
+    const userImg = localStorage.getItem('userPhoto') || "image/0.jpg";
+
+    if (text === "") return;
+
+    const newComment = {
+        name: userName,
+        image: userImg,
+        comment: text,
+        timestamp: Date.now()
+    };
+
+    commentsRef.push(newComment); // إرسال للـ Firebase
+    input.value = ""; // تفريغ الحقل
+}
+
+// الاستماع للتعليقات وعرضها
+commentsRef.on('value', (snapshot) => {
+    const commentsList = document.getElementById('commentsList');
+    commentsList.innerHTML = "";
+    
+    const currentUser = localStorage.getItem('currentUser'); // معرفة المستخدم الحالي
+    const data = snapshot.val();
+
+    if (data) {
+        // نستخدم Object.entries للحصول على الـ Key الخاص بكل تعليق (مهم للحذف والتعديل)
+        Object.entries(data).reverse().forEach(([key, c]) => {
+            
+            // التحقق: هل هذا التعليق ملك للمستخدم الحالي؟
+            const isOwner = (c.name === currentUser);
+
+            let actionButtons = isOwner ? `
+                <div class="comment-actions">
+                    <button class="action-btn edit" onclick="prepareEdit('${key}', '${c.comment}')">تعديل</button>
+                    <button class="action-btn delete" onclick="deleteComment('${key}')">حذف</button>
+                </div>
+            ` : "";
+
+            commentsList.innerHTML += `
+                <div class="comment-card" id="comment-${key}">
+                    <div class="comment-header">
+                        <img src="${c.image}" class="comment-user-img">
+                        <span class="comment-user-name">${c.name}</span>
+                        ${actionButtons}
+                    </div>
+                    <div class="comment-text" id="text-${key}">${c.comment}</div>
+                </div>
+            `;
+        });
+    } else {
+        commentsList.innerHTML = "<p style='color: #666;'>لا توجد تعليقات بعد.</p>";
+    }
+});
+
+// وظيفة الحذف
+function deleteComment(commentKey) {
+    if (confirm("هل أنت متأكد من حذف هذا التعليق؟")) {
+        commentsRef.child(commentKey).remove()
+            .then(() => console.log("تم الحذف بنجاح"))
+            .catch((error) => alert("خطأ في الحذف: " + error));
+    }
+}
+
+// 1. وظيفة التحضير للتعديل (تحويل النص إلى حقل إدخال)
+function prepareEdit(commentKey, oldText) {
+    // العثور على حاوية نص التعليق المحددة باستخدام الكود الفريد
+    const commentDiv = document.querySelector(`#comment-${commentKey} .comment-text`);
+    
+    if (commentDiv) {
+        commentDiv.innerHTML = `
+            <input type="text" id="input-${commentKey}" class="edit-input" value="${oldText}" style="width:90%; padding:8px; background:#222; color:white; border:1px solid #e91e63; border-radius:5px;">
+            <div style="margin-top:10px; display:flex; gap:10px;">
+                <button onclick="saveEdit('${commentKey}')" style="color: #25D366; background:none; border:none; cursor:pointer; font-weight:bold;">حفظ ✅</button>
+                <button onclick="renderComments()" style="color: #888; background:none; border:none; cursor:pointer;">إلغاء ❌</button>
+            </div>
+        `;
+    }
+}
+
+// 2. وظيفة حفظ التعديل في Firebase
+function saveEdit(commentKey) {
+    const inputElement = document.getElementById(`input-${commentKey}`);
+    const newText = inputElement.value.trim();
+
+    if (newText === "") {
+        alert("لا يمكن ترك التعليق فارغاً");
+        return;
+    }
+
+    // تحديث النص في قاعدة بيانات فيربايس
+    commentsRef.child(commentKey).update({
+        comment: newText,
+        isEdited: true // إضافة علامة اختيارية توضح أن التعليق تم تعديله
+    }).then(() => {
+        console.log("تم التحديث بنجاح");
+        // لا حاجة لعمل شيء هنا لأن المستمع .on('value') سيحدث الشاشة تلقائياً
+    }).catch((error) => {
+        alert("حدث خطأ أثناء الحفظ: " + error.message);
+    });
+}
 // --- الجزء الرابع: وظائف العرض والبحث والمفضلة ---
 
 function renderLessons(dataToRender = MY_DATA, isFavView = false) {
@@ -442,3 +564,52 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 });
+const currentUser = localStorage.getItem('currentUser') || "Student";
+// إنشاء مرجع في Firebase خاص بهذا المستخدم فقط
+const chatRef = database.ref('private_chats/' + currentUser.replace(/[.#$[\]]/g, "_"));
+
+function openChat() {
+    document.getElementById('chatContainer').style.display = 'flex';
+    loadMessages();
+}
+
+function closeChat() {
+    document.getElementById('chatContainer').style.display = 'none';
+}
+
+function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    
+    if (msg === "") return;
+
+    chatRef.push({
+        sender: currentUser,
+        text: msg,
+        timestamp: Date.now()
+    });
+
+    input.value = "";
+}
+
+function loadMessages() {
+    chatRef.on('value', (snapshot) => {
+        const msgDiv = document.getElementById('chatMessages');
+        msgDiv.innerHTML = "";
+        const data = snapshot.val();
+        
+        if (data) {
+            Object.values(data).forEach(m => {
+                const isMe = m.sender === currentUser;
+                msgDiv.innerHTML += `
+                    <div style="align-self: ${isMe ? 'flex-end' : 'flex-start'}; 
+                                background: ${isMe ? '#e91e63' : '#333'}; 
+                                padding: 8px 12px; border-radius: 10px; max-width: 80%; font-size: 14px;">
+                        ${m.text}
+                    </div>
+                `;
+            });
+            msgDiv.scrollTop = msgDiv.scrollHeight; // النزول لآخر رسالة تلقائياً
+        }
+    });
+}

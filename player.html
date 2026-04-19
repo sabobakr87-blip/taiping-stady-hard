@@ -14,6 +14,18 @@
 </script>
 </head>
 <body style="background: #000; margin: 0; padding: 0; overflow-x: hidden;">
+    <div id="loading-screen" class="loading-wrapper">
+        <div class="liquid-loader">
+            <div class="loading-text">
+                Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+            </div>
+
+            <div class="loader-track">
+                <div class="liquid-fill"></div>
+            </div>
+        </div>
+    </div>
+
     <nav class="navbar" style="position: relative; z-index: 10;">
         <div class="logo">TAIPING<span>STADY HARD</span></div>
         <a href="profile.html" class="logout-link" style="text-decoration: none; background: #e91e63; border: #e91e63; border-radius: 30px; padding: 5px 15px; color: white;">إغلاق X</a>
@@ -37,6 +49,18 @@
                 <span class="like-count one">0</span>
                 <span class="like-count two">1</span>
             </div>
+
+            <div class="comments-section" style="width: 100%; max-width: 1200px; padding: 20px; box-sizing: border-box; text-align: right;">
+    <h2 style="color: white; border-right: 4px solid #e91e63; padding-right: 10px;">التعليقات</h2>
+    
+    <div class="comment-input-area" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <button onclick="sendComment()" style="background: #e91e63; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">إرسال</button>
+        <input type="text" id="commentInput" placeholder="اكتب تعليقك هنا..." style="flex: 1; padding: 10px; border-radius: 5px; border: 1px solid #333; background: #1a1a1a; color: white;">
+    </div>
+
+    <div id="commentsList" style="display: flex; flex-direction: column; gap: 15px;">
+        </div>
+</div>
 
             <hr style="border: 0; border-top: 1px solid #222; margin: 20px 0;">
         </div>

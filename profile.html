@@ -18,6 +18,7 @@
         // حماية الصفحة: إذا لم يسجل الدخول يعود للرئيسية
         if(localStorage.getItem('isLogged') !== 'true') window.location.href = 'index.html';
     </script>
+    
 </head>
 <body>
     <nav class="navbar">
@@ -45,7 +46,9 @@
                 <li><a href="https://chatgpt.com/?utm_source=google&utm_medium=paid_search&utm_campaign=GOOG_C_SEM_GBR_Core_CHT_BAU_ACQ_PER_MIX_ALL_EMEA_EG_AR_021425&c_id=22239765512&c_agid=176486813658&c_crid=789217897391&c_kwid=kwd-1928885899585&c_ims=&c_pms=9112408&c_nw=g&c_dvc=c&gad_source=1&gad_campaignid=22239765512&gbraid=0AAAAA-I0E5cYJsI6NMyaoVV4fzJuCQch6&gclid=Cj0KCQjwmunNBhDbARIsAOndKpkdLHOF7QeAgdKtaFRRf8emNbdE3thq-GXoWUv_eBxPG_lbjLe78EMaAvfHEALw_wcB"><i class="fa-solid fa-pen fa-bounce"></i><p>اسأل الذكاء الاصطناعي</p></a></li>
                 <li><a href="https://chat.whatsapp.com/IfNpgy7GzXQG9EVAsC9vcG" target="_blank"><i class="fa-solid fa-people-group fa-bounce"></i><p>المجموعات</p></a></li>
                 <li><a href="javascript:void(0)" onclick="renderFavorites()"><i class="fa-solid fa-heart fa-beat" style="color: #e91e63;"></i><p>المفضلة</p></a></li>
+                <li><a href="#" onclick="openChat()"><i class="fas fa-comments"></i><p>تحدث مع المستر</p></a></li>
                 <li><a href="javascript:void(0)" id="logoutBtn"><i class="fa-solid fa-right-from-bracket fa-flip"></i><p>تسجيل الخروج</p></a></li>
+                
             </ul>    
         </aside>
 
@@ -68,7 +71,22 @@
             </div>
         </main>
     </div>
+    <div id="chatContainer" style="display:none; position: fixed; bottom: 20px; left: 20px; width: 300px; height: 400px; background: #1a1a1a; border: 2px solid #e91e63; border-radius: 15px; z-index: 10000; flex-direction: column;">
+    <div style="background: #e91e63; padding: 10px; color: white; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between;">
+        <span>المحادثة مع المستر</span>
+        <button onclick="closeChat()" style="background:none; border:none; color:white; cursor:pointer;">X</button>
+    </div>
+    <div id="chatMessages" style="flex: 1; overflow-y: auto; padding: 10px; color: white; display: flex; flex-direction: column; gap: 8px;">
+        </div>
+    <div style="padding: 10px; display: flex; gap: 5px;">
+        <input type="text" id="chatInput" placeholder="اكتب رسالتك..." style="flex: 1; border-radius: 5px; border: none; padding: 5px;">
+        <button onclick="sendMessage()" style="background: #e91e63; color: white; border: none; border-radius: 5px; padding: 5px 10px;">إرسال</button>
+    </div>
+</div>
    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
     <script src="script.js"></script>
 </body>
 </html>
